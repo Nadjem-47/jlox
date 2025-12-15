@@ -13,6 +13,29 @@ public class Scanner {
     private final String source;
     private final List<Token> tokens = new ArrayList<>();
 
+
+    private static final Map<String, TokenType> keywords;
+
+    static {
+        keywords = new HashMap<>();
+        keywords.put("and", AND);
+        keywords.put("class", CLASS);
+        keywords.put("else", ELSE);
+        keywords.put("false", FALSE);
+        keywords.put("for", FOR);
+        keywords.put("fun", FUN);
+        keywords.put("if", IF);
+        keywords.put("nil", NIL);
+        keywords.put("or", OR);
+        keywords.put("print", PRINT);
+        keywords.put("return", RETURN);
+        keywords.put("super", SUPER);
+        keywords.put("this", THIS);
+        keywords.put("true", TRUE);
+        keywords.put("var", VAR);
+        keywords.put("while", WHILE);
+    }
+
     private int start = 0;
     private int current = 0;
     private int line = 1;
@@ -45,7 +68,6 @@ public class Scanner {
             case '-': addToken(MINUS); break;
             case '+': addToken(PLUS); break;
             case ';': addToken(SEMICOLON); break;
-            case '*': addToken(STAR); break;
 
             case '!':
                 addToken(match('=') ? BANG_EQUAL : BANG);
@@ -62,13 +84,28 @@ public class Scanner {
 
             case '/':
                 if (match('/')) {
-// A comment goes until the end of the line.
+                // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
-                } else {
+                } else if (match('*')) {
+                    while (!isAtEnd() && (peek() != '*' || peekNext() != '/')) {
+                        if (peek() == '\n') line++;
+                        advance();
+                    }
+                    if (isAtEnd()) {
+                        break;
+                    }
+                    advance(); // consume '*'
+                    advance(); // consume '/'
+                    break;
+                }
+
+                else {
                     addToken(SLASH);
                 }
                 break;
 
+
+            case '*': addToken(STAR); break;
             case ' ':
             case '\r':
             case '\t':
@@ -95,7 +132,11 @@ public class Scanner {
 
     private void identifier() {
         while (isAlphaNumeric(peek())) advance();
-        addToken(IDENTIFIER);
+
+        String text = source.substring(start, current);
+        TokenType type = keywords.get(text);
+        if (type == null) type = IDENTIFIER;
+        addToken(type);
     }
 
     private boolean isAlphaNumeric(char c) {
