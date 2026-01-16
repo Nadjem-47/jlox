@@ -1,6 +1,1 @@
-/* test.lox
-var name = "lox";*/
-if (name == "lox") {
-  print "It works!";
-}
-
+(1 + 2) * 3 == 9
