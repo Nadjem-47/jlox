@@ -11,11 +11,6 @@ class Parser {
     private final List<Token> tokens;
     private int current = 0;
     Parser(List<Token> tokens) {
-        System.out.print("====================================================");
-        System.out.print(tokens);
-        System.out.print("====================================================");
-
-
         this.tokens = tokens;
     }
 
@@ -27,8 +22,20 @@ class Parser {
         }
     }
 
+    private Expr comma() {
+        Expr expr = equality();
+
+        while (match(COMMA)) {
+            Expr right = equality();
+            expr = new Expr.Comma(expr, right);
+        }
+
+        return expr;
+    }
+
+
     private Expr expression() {
-        return equality();
+        return comma();
     }
 
     private Expr equality() {
@@ -160,7 +167,4 @@ class Parser {
         }
         throw error(peek(), "Expect expression.");
     }
-
-
-
 }
