@@ -68,6 +68,8 @@ public class Scanner {
             case '-': addToken(MINUS); break;
             case '+': addToken(PLUS); break;
             case ';': addToken(SEMICOLON); break;
+            case '?': addToken(QUESTION); break;
+            case ':': addToken(COLON); break;
 
             case '!':
                 addToken(match('=') ? BANG_EQUAL : BANG);
