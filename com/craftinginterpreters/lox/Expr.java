@@ -8,9 +8,10 @@ abstract class Expr {
         R visitGroupingExpr(Grouping expr);
         R visitLiteralExpr(Literal expr);
         R visitUnaryExpr(Unary expr);
-        R visitCommaExpr(Comma expr);
         R visitConditionalExpr(Conditional expr);
+        R visitCommaExpr(Comma expr);
     }
+
     static class Binary extends Expr {
         final Expr left;
         final Token operator;
@@ -69,20 +70,7 @@ abstract class Expr {
         }
     }
 
-    static class Comma extends Expr {
-        final Expr left;
-        final Expr right;
-
-        Comma(Expr left, Expr right) {
-            this.left = left;
-            this.right = right;
-        }
-
-        @Override
-        <R> R accept(Visitor<R> visitor) {
-            return visitor.visitCommaExpr(this);
-        }
-    }
+    // --- Added Manually ---
 
     static class Conditional extends Expr {
         final Expr condition;
@@ -98,6 +86,21 @@ abstract class Expr {
         @Override
         <R> R accept(Visitor<R> visitor) {
             return visitor.visitConditionalExpr(this);
+        }
+    }
+
+    static class Comma extends Expr {
+        final Expr left;
+        final Expr right;
+
+        Comma(Expr left, Expr right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitCommaExpr(this);
         }
     }
 
