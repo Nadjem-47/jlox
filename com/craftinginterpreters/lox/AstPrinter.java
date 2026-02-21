@@ -14,6 +14,12 @@ public class AstPrinter  implements Expr.Visitor<String>  {
     }
 
 
+    @Override
+    public String visitVariableExpr(Expr.Variable expr) {
+        return expr.name.lexeme; // Just print the name of the variable
+    }
+
+
 
     String print(Expr expr) {
         return expr.accept(this);

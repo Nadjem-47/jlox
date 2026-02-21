@@ -38,9 +38,29 @@ class Parser {
     List<Stmt> parse() {
         List<Stmt> statements = new ArrayList<>();
         while (!isAtEnd()) {
-            statements.add(statement());
+            statements.add(declaration());
         }
         return statements;
+    }
+
+    private Stmt declaration() {
+        try {
+            if (match(VAR)) return varDeclaration();
+            return statement();
+        } catch (ParseError error) {
+            synchronize();
+            return null;
+        }
+    }
+
+    private Stmt varDeclaration() {
+        Token name = consume(IDENTIFIER, "Expect variable name.");
+        Expr initializer = null;
+        if (match(EQUAL)) {
+            initializer = expression();
+        }
+        consume(SEMICOLON, "Expect ';' after variable declaration.");
+        return new Stmt.Var(name, initializer);
     }
 
     private Expr comma() {
@@ -61,8 +81,6 @@ class Parser {
         return expr;
     }
 
-
-
     private Expr expression() {
         return comma();
     }
@@ -80,8 +98,6 @@ class Parser {
 
         return expr;
     }
-
-
 
     private Expr equality() {
 
@@ -101,7 +117,6 @@ class Parser {
         return expr;
     }
 
-
     private Expr comparison() {
         Expr expr = term();
         while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
@@ -111,8 +126,6 @@ class Parser {
         }
         return expr;
     }
-
-
 
     private Expr term() {
 
@@ -149,7 +162,6 @@ class Parser {
         return expr;
     }
 
-
     private Expr unary() {
         if (match(BANG, MINUS)) {
             Token operator = previous();
@@ -159,13 +171,15 @@ class Parser {
         return primary();
     }
 
-
     private Expr primary() {
         if (match(FALSE)) return new Expr.Literal(false);
         if (match(TRUE)) return new Expr.Literal(true);
         if (match(NIL)) return new Expr.Literal(null);
         if (match(NUMBER, STRING)) {
             return new Expr.Literal(previous().literal);
+        }
+        if (match(IDENTIFIER)) {
+            return new Expr.Variable(previous());
         }
         if (match(LEFT_PAREN)) {
             Expr expr = expression();
@@ -174,7 +188,6 @@ class Parser {
         }
         throw error(peek(), "Expect expression.");
     }
-
 
     private boolean match(TokenType... types) {
         for (TokenType type : types) {
@@ -195,7 +208,6 @@ class Parser {
         Lox.error(token, message);
         return new ParseError();
     }
-
 
     private void synchronize() {
         advance();
@@ -230,20 +242,17 @@ class Parser {
     private boolean isAtEnd() {
         return peek().type == EOF;
     }
+
     private Token peek() {
         return tokens.get(current);
     }
+
     private Token previous() {
         return tokens.get(current - 1);
     }
-
-
-
 
     private Expr binaryError(Expr right) {
         // Discard the expression but keep parser moving
         return right;
     }
-
-
 }
