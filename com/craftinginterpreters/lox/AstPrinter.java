@@ -19,7 +19,10 @@ public class AstPrinter  implements Expr.Visitor<String>  {
         return expr.name.lexeme; // Just print the name of the variable
     }
 
-
+    @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        return parenthesize("= " + expr.name.lexeme, expr.value);
+    }
 
     String print(Expr expr) {
         return expr.accept(this);
