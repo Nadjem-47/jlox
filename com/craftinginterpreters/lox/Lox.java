@@ -59,11 +59,25 @@ public class Lox {
         // 2. You changed this from parser.parse() to parser.parse() returning a List
         List<Stmt> statements = parser.parse();
 
-// Stop if there was a syntax error.
+
+
+
+        // Stop if there was a syntax error.
         if (hadError) return;
         //System.out.println(new AstPrinter().print(expression));
 
-        interpreter.interpret(statements);
+        if (statements.size() == 1 &&
+                statements.get(0) instanceof Stmt.Expression) {
+
+            Stmt.Expression stmt =
+                    (Stmt.Expression) statements.get(0);
+
+            Object value = interpreter.evaluate(stmt.expression);
+            System.out.println(interpreter.stringify(value));
+
+        } else {
+            interpreter.interpret(statements);
+        }
     }
 
     static void error(int line, String message) {
