@@ -38,7 +38,6 @@ class Parser {
         return new Stmt.Print(value);
     }
 
-
     private Stmt expressionStatement() {
         Expr expr = expression();
         consume(SEMICOLON, "Expect ';' after expression.");
@@ -94,7 +93,6 @@ class Parser {
     private Expr expression() {
         return assignment();
     }
-
 
     private Expr assignment() {
         Expr expr = equality();
