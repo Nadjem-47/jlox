@@ -1,4 +1,4 @@
-package com.craftinginterpreters.tool;
+package com.craftinginterpreters.tool.com.craftinginterpreters.tool;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +18,7 @@ public class GenerateAst {
                 "Binary : Expr left, Token operator, Expr right",
                 "Grouping : Expr expression",
                 "Literal : Object value",
+                "Logical : Expr left, Token operator, Expr right",
                 "Unary : Token operator, Expr right",
                 "Variable : Token name",
                 "Conditional : Expr condition, Expr thenBranch, Expr elseBranch",
@@ -28,7 +29,8 @@ public class GenerateAst {
                 "Block : List<Stmt> statements",
                 "Expression : Expr expression",
                 "Print : Expr expression",
-                "Var : Token name, Expr initializer"
+                "Var : Token name, Expr initializer",
+                "While : Expr condition, Stmt body"
         ));
     }
 
