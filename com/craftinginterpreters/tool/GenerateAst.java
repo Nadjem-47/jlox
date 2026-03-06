@@ -1,4 +1,4 @@
-package com.craftinginterpreters.tool.com.craftinginterpreters.tool;
+package com.craftinginterpreters.tool;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,6 +29,7 @@ public class GenerateAst {
                 "Block : List<Stmt> statements",
                 "Expression : Expr expression",
                 "Print : Expr expression",
+                "If : Expr condition, Stmt thenBranch, Stmt elseBranch",
                 "Var : Token name, Expr initializer",
                 "While : Expr condition, Stmt body"
         ));
