@@ -59,8 +59,8 @@ public class Lox {
         // 2. You changed this from parser.parse() to parser.parse() returning a List
         List<Stmt> statements = parser.parse();
 
-
-
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(statements);
 
         // Stop if there was a syntax error.
         if (hadError) return;
