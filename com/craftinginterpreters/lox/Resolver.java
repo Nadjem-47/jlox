@@ -130,6 +130,16 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitConditionalExpr(Expr.Conditional expr) {
+        return null;
+    }
+
+    @Override
+    public Void visitCommaExpr(Expr.Comma expr) {
+        return null;
+    }
+
+    @Override
     public Void visitGroupingExpr(Expr.Grouping expr) {
         resolve(expr.expression);
         return null;
