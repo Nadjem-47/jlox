@@ -11,6 +11,7 @@ abstract class Expr {
         R visitLogicalExpr(Logical expr);
         R visitUnaryExpr(Unary expr);
         R visitVariableExpr(Variable expr);
+        R visitGetExpr(Get expr);
         R visitCallExpr(Call expr);
         R visitConditionalExpr(Conditional expr);
         R visitCommaExpr(Comma expr);
@@ -116,6 +117,21 @@ abstract class Expr {
         @Override
         <R> R accept(Visitor<R> visitor) {
             return visitor.visitVariableExpr(this);
+        }
+    }
+
+    static class Get extends Expr {
+        final Expr object;
+        final Token name;
+
+        Get(Expr object, Token name) {
+            this.object = object;
+            this.name = name;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitGetExpr(this);
         }
     }
 
