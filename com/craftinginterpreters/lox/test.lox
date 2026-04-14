@@ -1,9 +1,6 @@
-//  . Reading
-
-class Bacon {
-eat() {
-print "Crunch crunch crunch!";
+class Math {
+ init() {
+    print 4
+ }
 }
-}
-
-Bacon().eat(); // "Crunch crunch crunch!".
+new Math()
