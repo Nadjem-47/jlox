@@ -91,16 +91,32 @@ class Interpreter implements Expr.Visitor<Object>,
 
     @Override
     public Void visitClassStmt(Stmt.Class stmt) {
+
+        Object superclass = null;
+        // ... (logic for superclass if applicable) ...
+
         environment.define(stmt.name.lexeme, null);
 
-        Map<String, LoxFunction> methods = new HashMap<>();
+        // 1. Package the Static Methods
+        Map<String, LoxFunction> staticMethods = new HashMap<>();
+        for (Stmt.Function method : stmt.staticMethods) {
+            LoxFunction function = new LoxFunction(method, environment, false);
+            staticMethods.put(method.name.lexeme, function);
+        }
 
+        // 2. Create the Metaclass (The "class" that holds the static methods)
+        LoxClass metaclass = new LoxClass(null, null, stmt.name.lexeme + " metaclass", staticMethods);
+
+        // 3. Package the Instance Methods
+        Map<String, LoxFunction> methods = new HashMap<>();
         for (Stmt.Function method : stmt.methods) {
             LoxFunction function = new LoxFunction(method, environment,
                     method.name.lexeme.equals("init"));
             methods.put(method.name.lexeme, function);
         }
-        LoxClass klass = new LoxClass(stmt.name.lexeme, methods);
+
+        // 4. Create the final Class, handing it its Metaclass
+        LoxClass klass = new LoxClass(metaclass, (LoxClass)superclass, stmt.name.lexeme, methods);
 
         environment.assign(stmt.name, klass);
         return null;

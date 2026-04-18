@@ -1,6 +1,15 @@
 class Math {
- init() {
-    print 4
- }
+  // Static method
+  class square(n) {
+    print n * n;
+  }
+
+  // Instance method
+  sayHi() {
+    print "I am a Math instance.";
+  }
 }
-new Math()
+
+// 1. Test calling the static method directly on the class
+print Math.square(5); // Expect: 9
+//print Math.sayHi();
