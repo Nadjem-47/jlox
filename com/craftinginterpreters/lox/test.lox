@@ -1,15 +1,13 @@
-class Math {
-  // Static method
-  class square(n) {
-    print n * n;
-  }
-
-  // Instance method
-  sayHi() {
-    print "I am a Math instance.";
-  }
+class Doughnut {
+    cooks() {
+        inner();
+            print "Place in a nice box.";
+    }
+}
+class BostonCream  {
+    cook() {
+        print "Pipe full of custard and coat with chocolate.";
+    }
 }
 
-// 1. Test calling the static method directly on the class
-print Math.square(5); // Expect: 9
-//print Math.sayHi();
+BostonCream().cook();
